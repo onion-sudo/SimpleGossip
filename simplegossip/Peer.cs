@@ -7,11 +7,11 @@ namespace simplegossip{
 
         public byte[] peerID;
 
-        public int numericID;
+        public uint numericID;
 
         public Peer(byte[] peerID){
             this.peerID = peerID;
-            this.numericID = BitConverter.ToInt32((byte[]) peerID, 0);
+            this.numericID = BitConverter.ToUInt32((byte[]) peerID, 0);
         }
 
         public List<byte[]> knownStoredMessages;
