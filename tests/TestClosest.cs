@@ -27,8 +27,6 @@ namespace tests
                 epidemic.peerList.Add(new Peer(arr));
             }
 
-
-
             var nearest = epidemic.getXNearestPeers(3);
 
             var listCopy = new List<Peer>(epidemic.peerList.ToArray());
@@ -36,8 +34,12 @@ namespace tests
             listCopy.Sort((x, y) => Math.Abs(x.numericID - nID).CompareTo(Math.Abs(nID - y.numericID)));
 
             Assert.IsTrue(nearest.Length == 3);
+            var usAsPeer = new Peer(ourID);
 
             for (int i = 0; i < nearest.Length; i++){
+                if (nearest[i].numericID == usAsPeer.numericID){
+                    throw new Exception("Nearest peer cannot be us");
+                }
                 if (! listCopy[i].Equals(nearest[i])){
                     throw new Exception("Not nearest");
                 }

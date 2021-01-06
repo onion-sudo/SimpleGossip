@@ -1,0 +1,26 @@
+Server events:
+    0: version
+        return: ushort api version
+    1: upload_receive 
+        accept: byte[] peerID, byte[] where first 32 bytes are checksum and the rest are the message
+        return: enum UploadReceiveResult
+    2: list messages
+        accept: uint32 timestampOffset
+        return: byte array of checksums
+    3. list peers 
+        return: byte array of peer IDs
+
+
+StorageInterface handles logic
+
+
+When sending/forwarding message:
+    * Send to transport interface, specifying peer ID
+
+
+When message recieved or downloaded:
+    *
+    * Send to storage interface, if stored, gossip it out to N neighbors and X random other peers
+
+
+

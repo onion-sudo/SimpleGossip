@@ -7,8 +7,6 @@ namespace simplegossip{
 
         private byte[] personalID;
 
-        private static float spreadToNearestPercent = 0.1f;
-
         public List<Peer> peerList;
 
         public Epidemic(byte[] ourID){
@@ -18,10 +16,6 @@ namespace simplegossip{
         public Epidemic(byte[] ourID, Peer[] peerArray){
             personalID = ourID;
             peerList = new List<Peer>(peerArray);
-        }
-
-        public void sortPeerListInPlace(){
-            peerList.Sort((x, y) => y.numericID.CompareTo(x.numericID));
         }
 
         public Peer[] getXNearestPeers(int x, bool acceptLess=true){
@@ -40,8 +34,6 @@ namespace simplegossip{
             peerListCopy.Sort((x, y) => Math.Abs(x.numericID - usAsPeer.numericID).CompareTo(Math.Abs(usAsPeer.numericID - y.numericID)));
 
             return peerListCopy.GetRange(0, x).ToArray();
-
-
         }
 
         }
