@@ -5,9 +5,8 @@ import nacl
 
 
 
-def gossip_client(host, port, backend_comm: dict):
+def gossip_client(host, port, iointerface_socket, our_key):
 
-    our_key = SigningKey.generate()
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.connect((host, port))

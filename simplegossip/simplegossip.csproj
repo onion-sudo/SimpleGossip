@@ -4,8 +4,4 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="starksoft.aspen" Version="1.1.8" />
-  </ItemGroup>
-
 </Project>
