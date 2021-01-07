@@ -9,12 +9,9 @@ namespace simplegossip{
 
         public uint numericID;
 
-        public string transportAddress; // For convinence and laziness, simplegossip does not care about it
-
-        public Peer(byte[] peerID, string hostnameOrIP){
+        public Peer(byte[] peerID){
             this.peerID = peerID;
             this.numericID = BitConverter.ToUInt32((byte[]) peerID, 0);
-            this.transportAddress = hostnameOrIP;
         }
 
         // List of checksums
