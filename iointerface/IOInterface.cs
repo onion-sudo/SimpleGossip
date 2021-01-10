@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Collections.Generic;
 
 using simplegossip;
 
@@ -25,7 +26,9 @@ namespace iointerface
         {
             byte[] ourID = Base64Decode(args[0]);
             RoutingEvents routingEvents = new RoutingEvents(ourID);
+
             TcpListener server=null;
+            UInt32 maxMessageSize = 10 * 1000 * 100;
             try
             {
                 // Set the TcpListener on port 13000.
@@ -39,13 +42,13 @@ namespace iointerface
                 server.Start();
 
                 // Buffer for reading data
-                Byte[] bytes = new Byte[256];
+                Byte[] bytes = new Byte[maxMessageSize];
                 String data = null;
 
                 // Enter the listening loop.
                 while(true)
                 {
-                    Console.Write("Waiting for a connection... ");
+                    Console.WriteLine("Waiting for a connection... ");
 
                     // Perform a blocking call to accept requests.
                     // You could also use server.AcceptSocket() here.
@@ -66,15 +69,17 @@ namespace iointerface
                         data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
                         Console.WriteLine("Received: {0}", data);
 
-                        // Process the data sent by the client.
-                        data = data.ToUpper();
-
                         byte[] msg = System.Text.Encoding.ASCII.GetBytes(data);
-                        Commands cmd = (Commands)msg[0];
+                        byte[] peerID = msg[..32];
+                        Commands cmd = (Commands)msg[33];
+                        byte[] msgContent = msg[34..];
 
                         switch(cmd){
                             case Commands.GetVersion:
                                 msg = System.Text.Encoding.ASCII.GetBytes(routingEvents.GetAPIVersion().ToString());
+                            break;
+                            case Commands.UploadReceive:
+                                Peer                                
                             break;
                         }
 

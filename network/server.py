@@ -20,13 +20,14 @@ def gossip_server(IOInterface_socket):
 
 
     def handle(socket, address):
-        def perform_handshake() -> bytes:  # Get the peer's ID
+        def perform_handshake() -> signing.VerifyKey:  # Get the peer's ID
             handshake = socket.recv(96)
 
             verify = signing.VerifyKey(handshake[64:])
             try:
                 if verify.verify(handshake) == handshake[64:]:
                     socket.send(id_proof)
+                    return verify
                 else:
                     socket.send(b"Handshake failed: did not sign key")
                     raise nacl.exceptions.BadSignatureError
@@ -35,6 +36,12 @@ def gossip_server(IOInterface_socket):
                 raise
         peer_id = perform_handshake()
         payload = socket.recv(MAX_MESSAGE_SIZE_BYTES)
+        try:
+            peer_id.verify(payload)
+        except nacl.exceptions.BadSignatureError:
+            socket.send(b"bad sig")
+        else:
+            IOInterface_socket.send(peer_id.encode() + payload)
 
 
     server = StreamServer(('127.0.0.1', 1234), handle) # creates a new server

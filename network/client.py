@@ -23,5 +23,7 @@ def gossip_client(host, port, iointerface_socket, our_key):
         except nacl.exceptions.BadSignatureError:
             socket.send(b"Handshake failed: bad sig")
             raise
+        while True:
+            iointerface_socket.send()
     
 
