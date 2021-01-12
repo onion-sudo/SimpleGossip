@@ -32,6 +32,9 @@ namespace simplegossip{
             try{
                 addMessage(data);
             }
+            catch(DuplicateMessageError){
+                return;
+            }
         }
 
         // List of checksums
